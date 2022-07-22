@@ -23,9 +23,10 @@ val_img.sort()
 train_label = [DATA_PATH + 'train_label/' + os.path.basename(x)[:-4] + '_label.png' for x in train_img]
 val_label = [DATA_PATH + 'val_label/' + os.path.basename(x)[:-4] + '_label.png' for x in val_img]
 
+# transformation for images. Normalization is used for better convergence.
 trans = transforms.Compose([
     transforms.ToTensor(),
-    transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
+    transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225]) 
 ])
 
 train_set = SimDataset(train_img, train_label, transform=trans)
@@ -44,10 +45,11 @@ plotfigure.plot_figure(images[3], masks[3])
 
 
 # start to train the model
-
+# if cuda is available, use cuda. Otherwise, use cpu.
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 print(device)
 
+# semantic segmentation, 3 classifying outputs
 num_class = 3
 model = model.ResNetUNet(num_class).to(device)
 
@@ -56,7 +58,9 @@ for l in model.base_layers:
     for param in l.parameters():
         param.requires_grad = False
 
+# filter the resnet layer parameters which will not be calculated gradient.
 optimizer_ft = optim.Adam(filter(lambda p: p.requires_grad, model.parameters()), lr=5e-3)
+# learning rate decreases 10% every 10 step.
 exp_lr_scheduler = optim.lr_scheduler.StepLR(optimizer_ft, step_size=10, gamma=0.1)
 model = train.train_model(dataloaders, model, optimizer_ft, exp_lr_scheduler, num_epochs=15)
 
@@ -74,9 +78,10 @@ labels = labels.to(device)
 pred = model(inputs)
 pred = torch.sigmoid(pred)
 pred = pred.data.cpu().numpy()
-pred = pred.transpose(0, 2, 3, 1)
+pred = pred.transpose(0, 2, 3, 1)  # shape transposed to (batch size, H, W, 3)
 pred = (pred > 0.5).astype(int)
 print(pred.shape)
 
+# plot the prediction
 plotfigure.plot_figure(inputs[0], pred[0])
 
