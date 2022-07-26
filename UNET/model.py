@@ -2,9 +2,9 @@ import torch
 import torch.nn as nn
 from torchvision import models
 
-'''
+"""
 define the UNET model. ResNet18 is used as encoder here. 
-'''
+"""
 
 
 def convrelu(in_channels, out_channels, kernel, padding):
