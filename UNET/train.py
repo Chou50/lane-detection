@@ -5,13 +5,13 @@ from lossfunction import *
 import torch
 from tqdm import tqdm
 
-'''
+"""
 define train model. 
 Input: dataloader, model, optimizier, scheduler(for learning rate), and epochs
 Output: the best model
 Every epoch, there is a training step and a validating step. 
-Update the best model when validating loss is least.
-'''
+Update the best model when validating loss is smaller than best loss.
+"""
 
 # If cuda is available, use cuda. Otherwise, use cpu.
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
