@@ -2,8 +2,10 @@ from torch.utils.data import Dataset
 import cv2
 
 
-''' Read the images(.png) and masks(.png) with cv2. Transformation also can be input for images.
-Return image and mask (array/tensor) '''
+"""
+read the images(.png) and masks(.png) with cv2. Transformation also can be input for images.
+return image and mask (array/tensor) 
+"""
 
 class SimDataset(Dataset):
     def __init__(self, images, masks, transform=None):
