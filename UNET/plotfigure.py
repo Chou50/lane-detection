@@ -1,11 +1,11 @@
 import matplotlib.pyplot as plt
 import numpy as np
 
-'''
+"""
 define the function of plotting figure.
 Before plotting, images data need to be transformed back to the range of (0, 255). 
 It is reverse transformation of normalization.
-'''
+"""
 
 def reverse_transform(inp):
     # after ToTensor, figure shape is (H, W, 3), so need to be transposed to (3, H, W) to be plotted
