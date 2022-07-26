@@ -1,12 +1,12 @@
 import torch.nn.functional as F
 import torch
 
-''' 
+""" 
 define loss function and printing metrics function. 
 Here, loss is combination of dice loss and binary cross entropy.
 loss = a * dice loss + (1-a) * binary cross entropy.
 BCE, Dice loss and total loss are appended to metrics.
-'''
+"""
 
 # define dice loss, return the mean of dice loss
 def dice_loss(pred, target, smooth=1.):
